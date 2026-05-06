@@ -527,7 +527,7 @@ function renderHome() {
           <span class="text-[10px] font-mono tracking-widest uppercase text-brand-accent">Premium Access</span>
         </div>
         <p class="text-sm font-bold leading-relaxed text-white/80 group-hover:text-white">
-          Apply For a Tier 2 subscription to unlock exclusive academic resources.
+          Apply For a Tier 2 access to unlock more exclusive resources.
         </p>
         <div class="flex items-center gap-2 text-[10px] font-mono text-white/20 group-hover:text-brand-accent self-end">
           OPEN FORM <i data-lucide="arrow-right" class="w-3 h-3"></i>

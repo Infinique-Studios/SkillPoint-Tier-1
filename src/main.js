@@ -70,6 +70,324 @@ function initScrollNavbar() {
 }
 
 // --- Preview Modal ---
+// --- Preview Modal Logic ---
+let viewerState = {
+  zoom: 1,
+  page: 1,
+  total: 16,
+  tool: 'pointer',
+  isDrawing: false,
+  ctx: null,
+  canvas: null,
+  lastX: 0,
+  lastY: 0,
+  objects: [], 
+  history: [[]],
+  historyIndex: 0,
+  
+  // Settings
+  color: '#00ff88',
+  size: 3,
+  opacity: 1,
+  font: 'JetBrains Mono',
+  
+  currentStroke: null
+};
+
+function saveState() {
+  // Truncate history if we were in the middle of undoing
+  viewerState.history = viewerState.history.slice(0, viewerState.historyIndex + 1);
+  viewerState.history.push(JSON.parse(JSON.stringify(viewerState.objects)));
+  viewerState.historyIndex++;
+  
+  // Cap history
+  if (viewerState.history.length > 30) {
+    viewerState.history.shift();
+    viewerState.historyIndex--;
+  }
+  updateHistoryButtons();
+}
+
+function updateHistoryButtons() {
+  const btnUndo = document.getElementById('btn-undo');
+  const btnRedo = document.getElementById('btn-redo');
+  if (btnUndo) {
+    btnUndo.disabled = viewerState.historyIndex <= 0;
+    btnUndo.classList.toggle('text-white/60', !btnUndo.disabled);
+    btnUndo.classList.toggle('text-white/10', btnUndo.disabled);
+    // Add a slight glow or scale if needed
+    btnUndo.classList.toggle('hover:text-brand-accent', !btnUndo.disabled);
+  }
+  if (btnRedo) {
+    btnRedo.disabled = viewerState.historyIndex >= viewerState.history.length - 1;
+    btnRedo.classList.toggle('text-white/60', !btnRedo.disabled);
+    btnRedo.classList.toggle('text-white/10', btnRedo.disabled);
+    btnRedo.classList.toggle('hover:text-brand-accent', !btnRedo.disabled);
+  }
+}
+
+function redraw() {
+  const { ctx, canvas, objects, zoom } = viewerState;
+  if (!ctx || !canvas) return;
+  
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+  objects.forEach(obj => {
+    if (obj.type === 'stroke') {
+      ctx.beginPath();
+      ctx.strokeStyle = obj.color;
+      ctx.lineWidth = obj.width;
+      ctx.globalAlpha = obj.opacity;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      
+      if (obj.points.length > 0) {
+        ctx.moveTo(obj.points[0].x, obj.points[0].y);
+        for(let i = 1; i < obj.points.length; i++) {
+          ctx.lineTo(obj.points[i].x, obj.points[i].y);
+        }
+        ctx.stroke();
+      }
+    } else if (obj.type === 'text') {
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = obj.color;
+      ctx.font = `${obj.size}px ${obj.font}`;
+      ctx.fillText(obj.text, obj.x, obj.y);
+    }
+  });
+  ctx.globalAlpha = 1;
+}
+
+function initViewerControls() {
+  const stage = document.getElementById('viewer-stage');
+  const canvas = document.getElementById('viewer-canvas');
+  const zoomDisplay = document.getElementById('zoom-val');
+  const optionsPanel = document.getElementById('tool-options');
+  
+  viewerState.canvas = canvas;
+  viewerState.ctx = canvas.getContext('2d');
+  
+  const resizeCanvas = () => {
+    canvas.width = stage.clientWidth;
+    canvas.height = stage.clientHeight * 2;
+    redraw();
+  };
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  // Zoom Handler
+  const updateZoom = (delta) => {
+    viewerState.zoom = Math.min(Math.max(0.5, viewerState.zoom + delta), 2);
+    stage.style.transform = `scale(${viewerState.zoom})`;
+    zoomDisplay.innerText = `${Math.round(viewerState.zoom * 100)}%`;
+  };
+  document.getElementById('z-plus')?.addEventListener('click', () => updateZoom(0.1));
+  document.getElementById('z-minus')?.addEventListener('click', () => updateZoom(-0.1));
+
+  // History Actions
+  document.getElementById('btn-undo')?.addEventListener('click', () => {
+    if (viewerState.historyIndex > 0) {
+      viewerState.historyIndex--;
+      viewerState.objects = JSON.parse(JSON.stringify(viewerState.history[viewerState.historyIndex]));
+      redraw();
+      updateHistoryButtons();
+    }
+  });
+  document.getElementById('btn-redo')?.addEventListener('click', () => {
+    if (viewerState.historyIndex < viewerState.history.length - 1) {
+      viewerState.historyIndex++;
+      viewerState.objects = JSON.parse(JSON.stringify(viewerState.history[viewerState.historyIndex]));
+      redraw();
+      updateHistoryButtons();
+    }
+  });
+
+  // Tool Controls Panel Persistence
+  const updateToolOptions = (tool) => {
+    optionsPanel.classList.toggle('hidden', tool === 'pointer');
+    optionsPanel.classList.toggle('flex', tool !== 'pointer');
+    
+    document.getElementById('opt-color').style.display = (tool === 'pen' || tool === 'text') ? 'flex' : 'none';
+    document.getElementById('opt-size').style.display = (tool === 'pen' || tool === 'eraser') ? 'flex' : 'none';
+    document.getElementById('opt-opacity').style.display = (tool === 'pen') ? 'flex' : 'none';
+    document.getElementById('opt-font').style.display = (tool === 'text') ? 'flex' : 'none';
+  };
+
+  // Tool Settings Listeners
+  document.querySelectorAll('.color-dot').forEach(dot => {
+    dot.addEventListener('click', () => {
+      document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active', 'ring-2', 'ring-white'));
+      dot.classList.add('active', 'ring-2', 'ring-white');
+      viewerState.color = dot.dataset.color;
+    });
+  });
+
+  document.getElementById('size-slider')?.addEventListener('input', (e) => {
+    viewerState.size = parseInt(e.target.value);
+  });
+
+  document.getElementById('opacity-slider')?.addEventListener('input', (e) => {
+    viewerState.opacity = parseFloat(e.target.value);
+  });
+
+  document.getElementById('font-select')?.addEventListener('change', (e) => {
+    viewerState.font = e.target.value;
+  });
+
+  // Tool Selection
+  document.querySelectorAll('.tool-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tool-btn').forEach(b => {
+        b.classList.remove('active', 'bg-brand-accent/10', 'text-brand-accent');
+        b.classList.add('text-white/40');
+      });
+      btn.classList.add('active', 'bg-brand-accent/10', 'text-brand-accent');
+      btn.classList.remove('text-white/40');
+      
+      const tool = btn.dataset.tool;
+      viewerState.tool = tool;
+      updateToolOptions(tool);
+      
+      if (tool === 'pointer') {
+        canvas.classList.add('pointer-events-none');
+        canvas.classList.remove('pointer-events-auto', 'opacity-100');
+      } else {
+        canvas.classList.remove('pointer-events-none');
+        canvas.classList.add('pointer-events-auto', 'opacity-100');
+        canvas.style.cursor = tool === 'eraser' ? 'cell' : (tool === 'text' ? 'text' : 'crosshair');
+      }
+    });
+  });
+
+  // Drawing / Interaction logic
+  canvas.addEventListener('mousedown', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / viewerState.zoom;
+    const y = (e.clientY - rect.top) / viewerState.zoom;
+
+    if (viewerState.tool === 'pen') {
+      viewerState.isDrawing = true;
+      viewerState.currentStroke = {
+        type: 'stroke',
+        points: [{ x, y }],
+        color: viewerState.color,
+        width: viewerState.size,
+        opacity: viewerState.opacity
+      };
+      viewerState.objects.push(viewerState.currentStroke);
+    } else if (viewerState.tool === 'eraser') {
+      viewerState.isDrawing = true;
+      handleErase(x, y);
+    } else if (viewerState.tool === 'text') {
+      addTextInput(e.clientX, e.clientY, x, y);
+    }
+    
+    viewerState.lastX = x;
+    viewerState.lastY = y;
+  });
+
+  canvas.addEventListener('mousemove', (e) => {
+    if (!viewerState.isDrawing) return;
+    const rect = canvas.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / viewerState.zoom;
+    const y = (e.clientY - rect.top) / viewerState.zoom;
+
+    if (viewerState.tool === 'pen' && viewerState.currentStroke) {
+      viewerState.currentStroke.points.push({ x, y });
+      redraw();
+    } else if (viewerState.tool === 'eraser') {
+      handleErase(x, y);
+    }
+  });
+
+  const handleErase = (ex, ey) => {
+    const radius = viewerState.size * 2;
+    let changed = false;
+
+    // Erase strokes
+    viewerState.objects = viewerState.objects.filter(obj => {
+      if (obj.type === 'stroke') {
+        const isNear = obj.points.some(p => Math.hypot(p.x - ex, p.y - ey) < radius);
+        if (isNear) { changed = true; return false; }
+      } else if (obj.type === 'text') {
+        const ctx = viewerState.ctx;
+        ctx.font = `${obj.size}px ${obj.font}`;
+        const metrics = ctx.measureText(obj.text);
+        const w = metrics.width;
+        const h = obj.size;
+        // Simple bounding box check
+        if (ex > obj.x && ex < obj.x + w && ey > obj.y - h && ey < obj.y) {
+          changed = true; return false;
+        }
+      }
+      return true;
+    });
+
+    if (changed) redraw();
+  };
+
+  const addTextInput = (screenX, screenY, canvasX, canvasY) => {
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.classList.add('fixed', 'bg-black/80', 'text-white', 'border', 'border-brand-accent', 'px-2', 'py-1', 'rounded', 'outline-none', 'z-[1000]', 'font-mono');
+    input.style.left = `${screenX}px`;
+    input.style.top = `${screenY}px`;
+    input.style.fontSize = `${20 * viewerState.zoom}px`;
+    input.style.color = viewerState.color;
+    input.style.fontFamily = viewerState.font === 'serif' ? 'Playfair Display' : (viewerState.font === 'Inter' ? 'Inter' : 'JetBrains Mono');
+    document.body.appendChild(input);
+    
+    setTimeout(() => input.focus(), 10);
+
+    const finishText = () => {
+      if (input.value.trim()) {
+        viewerState.objects.push({
+          type: 'text',
+          x: canvasX,
+          y: canvasY,
+          text: input.value,
+          color: viewerState.color,
+          font: viewerState.font,
+          size: 20
+        });
+        redraw();
+        saveState();
+      }
+      if (input.parentNode) document.body.removeChild(input);
+    };
+
+    input.addEventListener('blur', finishText);
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') finishText();
+      if (e.key === 'Escape') document.body.removeChild(input);
+    });
+  };
+
+  canvas.addEventListener('mouseup', () => {
+    if (viewerState.isDrawing) saveState();
+    viewerState.isDrawing = false;
+    viewerState.currentStroke = null;
+  });
+  canvas.addEventListener('mouseleave', () => {
+    if (viewerState.isDrawing) saveState();
+    viewerState.isDrawing = false;
+  });
+
+  // Download logic 
+  document.getElementById('btn-download')?.addEventListener('click', () => {
+    const originalUrl = document.getElementById('preview-external').href;
+    if (originalUrl.includes('drive.google.com')) {
+      const fileId = originalUrl.match(/\/d\/(.+?)\//)?.[1];
+      if (fileId) {
+        window.open(`https://drive.google.com/uc?export=download&id=${fileId}`, '_blank');
+      }
+    }
+  });
+
+  // Re-run lucide icons for any new dynamically added elements
+  if (window.lucide) window.lucide.createIcons();
+}
+
 window.openPreview = (url, title) => {
   const modal = document.getElementById('preview-modal');
   const iframe = document.getElementById('preview-iframe');
@@ -77,26 +395,68 @@ window.openPreview = (url, title) => {
   const previewExternal = document.getElementById('preview-external');
   const loader = document.getElementById('preview-loader');
 
-  // Convert drive links to preview type if possible
+  // Convert drive links to preview type if possible and add embedded param
   let previewUrl = url;
   if (url.includes('drive.google.com/file/d/')) {
     previewUrl = url.replace('/view', '/preview').replace('/edit', '/preview');
+    if (!previewUrl.includes('embedded=true')) {
+      previewUrl += (previewUrl.includes('?') ? '&' : '?') + 'embedded=true';
+    }
   }
 
-  previewTitle.innerText = title;
+  // Set visual title in the pro sub-header
+  previewTitle.innerText = (title || "SkillPoint Document").toUpperCase();
   previewExternal.href = url;
   
   modal.classList.remove('hidden');
   modal.classList.add('flex');
   
-  // Reset scroll
+  // Reset viewer stats and history
+  viewerState.zoom = 1;
+  viewerState.page = 1;
+  viewerState.objects = [];
+  viewerState.history = [[]];
+  viewerState.historyIndex = 0;
+  
+  const pCurrent = document.getElementById('p-current');
+  const stage = document.getElementById('viewer-stage');
+  const zoomVal = document.getElementById('zoom-val');
+  
+  if (pCurrent) pCurrent.innerText = '1';
+  if (stage) stage.style.transform = 'scale(1)';
+  if (zoomVal) zoomVal.innerText = '100%';
+  
+  updateHistoryButtons();
+  
+  // Initialize controls if it's the first time
+  if (!window.viewerInitialized) {
+    initViewerControls();
+    window.viewerInitialized = true;
+  }
+  
+  // Clear canvas overlay
+  const canvas = document.getElementById('viewer-canvas');
+  if (canvas) {
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  // Lock background scroll
   document.body.style.overflow = 'hidden';
   
+  // Reset and show loader
   loader.style.display = 'flex';
+  loader.style.opacity = '1';
   iframe.src = previewUrl;
   
   iframe.onload = () => {
-    loader.style.display = 'none';
+    // Artificial delay to show the "secure reader" initialization for feel
+    setTimeout(() => {
+      loader.style.opacity = '0';
+      setTimeout(() => {
+        loader.style.display = 'none';
+      }, 500);
+    }, 800);
   };
 };
 
@@ -158,7 +518,22 @@ function renderHome() {
   const app = document.getElementById('app');
   app.innerHTML = `
     <!-- Hero Section -->
-    <section class="min-h-screen flex items-center justify-center pt-20 px-6 overflow-hidden">
+    <section class="min-h-screen flex items-center justify-center pt-20 px-6 overflow-hidden relative">
+      <!-- Tier 2 Application Overlay -->
+      <a href="https://forms.gle/Rkh8i15kFwa7yUDB8" target="_blank"
+         class="fixed bottom-10 right-10 z-50 glass p-6 rounded-2xl border border-white/10 flex flex-col items-start gap-4 hover:bg-white/10 transition-all group backdrop-blur-xl max-w-[240px] shadow-2xl">
+        <div class="flex items-center gap-3">
+          <div class="w-2 h-2 rounded-full bg-brand-accent animate-pulse"></div>
+          <span class="text-[10px] font-mono tracking-widest uppercase text-brand-accent">Premium Access</span>
+        </div>
+        <p class="text-sm font-bold leading-relaxed text-white/80 group-hover:text-white">
+          Apply For a Tier 2 subscription to unlock exclusive academic resources.
+        </p>
+        <div class="flex items-center gap-2 text-[10px] font-mono text-white/20 group-hover:text-brand-accent self-end">
+          OPEN FORM <i data-lucide="arrow-right" class="w-3 h-3"></i>
+        </div>
+      </a>
+
       <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <div class="absolute top-[20%] left-[10%] w-96 h-96 bg-brand-accent/10 blur-[120px] rounded-full"></div>
         <div class="absolute bottom-[20%] right-[10%] w-96 h-96 bg-brand-accent/5 blur-[120px] rounded-full"></div>
@@ -301,6 +676,12 @@ function renderSubjects() {
             </div>
           </div>
         `).join('')}
+
+        <div class="mt-20 pt-10 border-t border-white/5 text-center">
+          <p class="text-white/30 text-sm font-medium tracking-wide italic">
+             If you cannot find your subject, please be patient as we're constantly updating the site.
+          </p>
+        </div>
       </div>
     </div>
   `;
@@ -318,8 +699,7 @@ function renderSubjectExplorer(subjectId, section) {
   const sections = [
     { id: 'notes', label: 'Revision Notes', icon: 'file-text' },
     { id: 'topical', label: 'Topical Questions', icon: 'help-circle' },
-    { id: 'textbooks', label: 'Textbooks', icon: 'book' },
-    { id: 'resources', label: 'Resources', icon: 'link' }
+    { id: 'textbooks', label: 'Textbooks', icon: 'book' }
   ];
 
   app.innerHTML = `
@@ -479,30 +859,6 @@ function renderSectionContent(subject, section) {
         `;
       }
       return renderEmptyState('No textbooks available.');
-
-    case 'resources':
-      if (subject.resources && subject.resources.length > 0) {
-        return `
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            ${subject.resources.map(res => `
-              <a href="${res.url}" download
-                 class="p-8 glass rounded-3xl border border-white/5 hover:border-brand-accent/30 transition-all group flex items-center justify-between">
-                <div class="flex items-center gap-6">
-                  <div class="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <i data-lucide="${res.type === 'xlsx' ? 'table' : 'file'}" class="text-brand-accent w-8 h-8"></i>
-                  </div>
-                  <div>
-                    <h4 class="text-xl font-bold mb-1">${res.title}</h4>
-                    <span class="text-xs text-brand-accent font-mono uppercase tracking-widest">${res.type || 'Resource'} File</span>
-                  </div>
-                </div>
-                <i data-lucide="download" class="w-6 h-6 text-white/20 group-hover:text-brand-accent transition-all"></i>
-              </a>
-            `).join('')}
-          </div>
-        `;
-      }
-      return renderEmptyState('Learning resources are being curated.');
 
     default:
       return '';

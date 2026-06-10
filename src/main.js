@@ -85,6 +85,11 @@ let viewerState = {
   history: [[]],
   historyIndex: 0,
   
+  // Dragging state
+  isDraggingObject: false,
+  draggedObject: null,
+  dragOffset: { x: 0, y: 0 },
+  
   // Settings
   color: '#00ff88',
   size: 3,
@@ -127,7 +132,7 @@ function updateHistoryButtons() {
 }
 
 function redraw() {
-  const { ctx, canvas, objects, zoom } = viewerState;
+  const { ctx, canvas, objects } = viewerState;
   if (!ctx || !canvas) return;
   
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -151,38 +156,86 @@ function redraw() {
     } else if (obj.type === 'text') {
       ctx.globalAlpha = 1;
       ctx.fillStyle = obj.color;
-      ctx.font = `${obj.size}px ${obj.font}`;
+      const fontName = obj.font === 'serif' ? 'Playfair Display' : (obj.font === 'Inter' ? 'Inter' : 'JetBrains Mono');
+      ctx.font = `${obj.size}px "${fontName}"`;
+      ctx.textBaseline = 'alphabetic';
       ctx.fillText(obj.text, obj.x, obj.y);
     }
   });
   ctx.globalAlpha = 1;
+  
+  // Update hit boxes only when NOT interacting to avoid DOM thrashing
+  if (!viewerState.isDraggingObject && !viewerState.isDrawing) {
+    syncHitBoxes();
+  }
+}
+
+function syncHitBoxes() {
+  const container = document.getElementById('hit-boxes');
+  if (!container || !viewerState.canvas) return;
+
+  container.innerHTML = '';
+  
+  // Only show hit boxes if in pointer mode to allow passthrough scroll in other modes
+  if (viewerState.tool !== 'pointer') return;
+
+  viewerState.objects.forEach((obj) => {
+    if (obj.type === 'text') {
+      const div = document.createElement('div');
+      div.classList.add('absolute', 'pointer-events-auto', 'cursor-grab', 'hover:bg-brand-accent/20');
+      
+      // Calculate font for measurement
+      const fontName = obj.font === 'serif' ? 'Playfair Display' : (obj.font === 'Inter' ? 'Inter' : 'JetBrains Mono');
+      viewerState.ctx.font = `${obj.size}px "${fontName}"`;
+      
+      const metrics = viewerState.ctx.measureText(obj.text);
+      const w = metrics.width || 50;
+      const h = obj.size;
+
+      div.style.left = `${obj.x}px`;
+      div.style.top = `${obj.y - h}px`; // Adjust for alphabetic baseline
+      div.style.width = `${w}px`;
+      div.style.height = `${h + 5}px`;
+
+      div.addEventListener('mousedown', (e) => {
+        if (viewerState.tool !== 'pointer') return;
+        e.stopPropagation();
+        e.preventDefault();
+        
+        viewerState.isDraggingObject = true;
+        viewerState.draggedObject = obj;
+        
+        const rect = viewerState.canvas.getBoundingClientRect();
+        const startX = e.clientX - rect.left;
+        const startY = e.clientY - rect.top;
+        
+        viewerState.dragOffset = { x: startX - obj.x, y: startY - obj.y };
+        div.style.cursor = 'grabbing';
+      });
+
+      container.appendChild(div);
+    }
+  });
 }
 
 function initViewerControls() {
   const stage = document.getElementById('viewer-stage');
   const canvas = document.getElementById('viewer-canvas');
-  const zoomDisplay = document.getElementById('zoom-val');
   const optionsPanel = document.getElementById('tool-options');
+  const hitBoxes = document.getElementById('hit-boxes');
   
   viewerState.canvas = canvas;
   viewerState.ctx = canvas.getContext('2d');
   
   const resizeCanvas = () => {
+    if (!stage || !canvas) return;
     canvas.width = stage.clientWidth;
-    canvas.height = stage.clientHeight * 2;
+    canvas.height = stage.clientHeight;
     redraw();
   };
+  window.viewerResizeHandler = resizeCanvas;
   window.addEventListener('resize', resizeCanvas);
   resizeCanvas();
-
-  // Zoom Handler
-  const updateZoom = (delta) => {
-    viewerState.zoom = Math.min(Math.max(0.5, viewerState.zoom + delta), 2);
-    stage.style.transform = `scale(${viewerState.zoom})`;
-    zoomDisplay.innerText = `${Math.round(viewerState.zoom * 100)}%`;
-  };
-  document.getElementById('z-plus')?.addEventListener('click', () => updateZoom(0.1));
-  document.getElementById('z-minus')?.addEventListener('click', () => updateZoom(-0.1));
 
   // History Actions
   document.getElementById('btn-undo')?.addEventListener('click', () => {
@@ -249,21 +302,46 @@ function initViewerControls() {
       updateToolOptions(tool);
       
       if (tool === 'pointer') {
-        canvas.classList.add('pointer-events-none');
-        canvas.classList.remove('pointer-events-auto', 'opacity-100');
+        canvas.classList.remove('opacity-100');
+        canvas.classList.add('pointer-events-none', 'opacity-80');
+        if (hitBoxes) hitBoxes.style.pointerEvents = 'none'; // Ensure container is passthrough
       } else {
-        canvas.classList.remove('pointer-events-none');
+        canvas.classList.remove('pointer-events-none', 'opacity-80');
         canvas.classList.add('pointer-events-auto', 'opacity-100');
+        if (hitBoxes) hitBoxes.style.pointerEvents = 'none'; // Container always passthrough, only children auto
         canvas.style.cursor = tool === 'eraser' ? 'cell' : (tool === 'text' ? 'text' : 'crosshair');
       }
+      redraw();
     });
   });
 
-  // Drawing / Interaction logic
+  // Passthrough wheel events to allow scrolling the PDF underneath 
+  const passthroughScroll = () => {
+    if (viewerState.isDrawing || viewerState.isDraggingObject) return;
+    
+    // Briefly disable pointer events on overlays so next wheel events hit the iframe
+    canvas.style.pointerEvents = 'none';
+    if (hitBoxes) hitBoxes.style.pointerEvents = 'none';
+
+    if (window._scrollTimeout) clearTimeout(window._scrollTimeout);
+    window._scrollTimeout = setTimeout(() => {
+      if (viewerState.tool !== 'pointer') {
+        canvas.style.pointerEvents = 'auto';
+      }
+      // hitBoxes container remains none, children (hit divs) are auto
+    }, 150);
+  };
+
+  canvas.addEventListener('wheel', passthroughScroll, { passive: true });
+  if (hitBoxes) hitBoxes.addEventListener('wheel', passthroughScroll, { passive: true });
+
+  // Handle Mousedown
   canvas.addEventListener('mousedown', (e) => {
+    if (document.getElementById('preview-modal').classList.contains('hidden')) return;
+    
     const rect = canvas.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / viewerState.zoom;
-    const y = (e.clientY - rect.top) / viewerState.zoom;
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
 
     if (viewerState.tool === 'pen') {
       viewerState.isDrawing = true;
@@ -286,11 +364,23 @@ function initViewerControls() {
     viewerState.lastY = y;
   });
 
-  canvas.addEventListener('mousemove', (e) => {
+  // Handle Mousemove
+  document.addEventListener('mousemove', (e) => {
+    if (document.getElementById('preview-modal').classList.contains('hidden')) return;
+    if (!viewerState.canvas) return;
+    
+    const rect = viewerState.canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    if (viewerState.isDraggingObject && viewerState.draggedObject) {
+      viewerState.draggedObject.x = x - viewerState.dragOffset.x;
+      viewerState.draggedObject.y = y - viewerState.dragOffset.y;
+      redraw();
+      return;
+    }
+
     if (!viewerState.isDrawing) return;
-    const rect = canvas.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / viewerState.zoom;
-    const y = (e.clientY - rect.top) / viewerState.zoom;
 
     if (viewerState.tool === 'pen' && viewerState.currentStroke) {
       viewerState.currentStroke.points.push({ x, y });
@@ -300,8 +390,25 @@ function initViewerControls() {
     }
   });
 
+  // Handle Mouseup
+  document.addEventListener('mouseup', () => {
+    if (document.getElementById('preview-modal').classList.contains('hidden')) return;
+    
+    if (viewerState.isDrawing || viewerState.isDraggingObject) {
+      saveState();
+    }
+    
+    viewerState.isDrawing = false;
+    viewerState.isDraggingObject = false;
+    viewerState.draggedObject = null;
+    viewerState.currentStroke = null;
+    
+    // Refresh hitboxes for potential new text or final positions
+    syncHitBoxes();
+  });
+
   const handleErase = (ex, ey) => {
-    const radius = viewerState.size * 2;
+    const radius = Math.max(10, viewerState.size * 2);
     let changed = false;
 
     // Erase strokes
@@ -311,7 +418,8 @@ function initViewerControls() {
         if (isNear) { changed = true; return false; }
       } else if (obj.type === 'text') {
         const ctx = viewerState.ctx;
-        ctx.font = `${obj.size}px ${obj.font}`;
+        const fontName = obj.font === 'serif' ? 'Playfair Display' : (obj.font === 'Inter' ? 'Inter' : 'JetBrains Mono');
+        ctx.font = `${obj.size}px "${fontName}"`;
         const metrics = ctx.measureText(obj.text);
         const w = metrics.width;
         const h = obj.size;
@@ -329,17 +437,22 @@ function initViewerControls() {
   const addTextInput = (screenX, screenY, canvasX, canvasY) => {
     const input = document.createElement('input');
     input.type = 'text';
-    input.classList.add('fixed', 'bg-black/80', 'text-white', 'border', 'border-brand-accent', 'px-2', 'py-1', 'rounded', 'outline-none', 'z-[1000]', 'font-mono');
-    input.style.left = `${screenX}px`;
-    input.style.top = `${screenY}px`;
-    input.style.fontSize = `${20 * viewerState.zoom}px`;
+    input.classList.add('fixed', 'bg-[#141414]', 'text-white', 'border', 'border-brand-accent/50', 'px-3', 'py-2', 'rounded-xl', 'outline-none', 'z-[1000]', 'shadow-2xl', 'backdrop-blur-xl');
+    input.style.left = `${screenX - 20}px`;
+    input.style.top = `${screenY - 20}px`;
+    input.style.fontSize = `${20}px`;
     input.style.color = viewerState.color;
-    input.style.fontFamily = viewerState.font === 'serif' ? 'Playfair Display' : (viewerState.font === 'Inter' ? 'Inter' : 'JetBrains Mono');
+    const fontName = viewerState.font === 'serif' ? 'Playfair Display' : (viewerState.font === 'Inter' ? 'Inter' : 'JetBrains Mono');
+    input.style.fontFamily = `"${fontName}", monospace`;
     document.body.appendChild(input);
     
     setTimeout(() => input.focus(), 10);
 
+    let finished = false;
     const finishText = () => {
+      if (finished) return;
+      finished = true;
+
       if (input.value.trim()) {
         viewerState.objects.push({
           type: 'text',
@@ -353,25 +466,21 @@ function initViewerControls() {
         redraw();
         saveState();
       }
-      if (input.parentNode) document.body.removeChild(input);
+      input.remove();
     };
 
     input.addEventListener('blur', finishText);
     input.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') finishText();
-      if (e.key === 'Escape') document.body.removeChild(input);
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        finishText();
+      }
+      if (e.key === 'Escape') {
+        finished = true;
+        input.remove();
+      }
     });
   };
-
-  canvas.addEventListener('mouseup', () => {
-    if (viewerState.isDrawing) saveState();
-    viewerState.isDrawing = false;
-    viewerState.currentStroke = null;
-  });
-  canvas.addEventListener('mouseleave', () => {
-    if (viewerState.isDrawing) saveState();
-    viewerState.isDrawing = false;
-  });
 
   // Download logic 
   document.getElementById('btn-download')?.addEventListener('click', () => {
@@ -418,13 +527,9 @@ window.openPreview = (url, title) => {
   viewerState.history = [[]];
   viewerState.historyIndex = 0;
   
-  const pCurrent = document.getElementById('p-current');
   const stage = document.getElementById('viewer-stage');
-  const zoomVal = document.getElementById('zoom-val');
   
-  if (pCurrent) pCurrent.innerText = '1';
   if (stage) stage.style.transform = 'scale(1)';
-  if (zoomVal) zoomVal.innerText = '100%';
   
   updateHistoryButtons();
   
@@ -432,6 +537,8 @@ window.openPreview = (url, title) => {
   if (!window.viewerInitialized) {
     initViewerControls();
     window.viewerInitialized = true;
+  } else if (window.viewerResizeHandler) {
+    window.viewerResizeHandler();
   }
   
   // Clear canvas overlay
@@ -448,6 +555,10 @@ window.openPreview = (url, title) => {
   loader.style.display = 'flex';
   loader.style.opacity = '1';
   iframe.src = previewUrl;
+
+  // Set default tool state
+  const defaultTool = document.getElementById('tool-pointer');
+  if (defaultTool) defaultTool.click();
   
   iframe.onload = () => {
     // Artificial delay to show the "secure reader" initialization for feel
@@ -479,6 +590,7 @@ function handleRouting() {
   // Simple route matching
   if (hash === '#/') renderHome();
   else if (hash === '#/subjects') renderSubjects();
+  else if (hash === '#/credits') renderCredits();
   else if (hash.startsWith('#/subjects/')) {
     const parts = hash.split('/');
     const subjectId = parts[2];
@@ -527,7 +639,7 @@ function renderHome() {
           <span class="text-[10px] font-mono tracking-widest uppercase text-brand-accent">Premium Access</span>
         </div>
         <p class="text-sm font-bold leading-relaxed text-white/80 group-hover:text-white">
-          Apply For a Tier 2 access to unlock more exclusive resources.
+          Apply For a Tier 2 subscription to unlock exclusive academic resources.
         </p>
         <div class="flex items-center gap-2 text-[10px] font-mono text-white/20 group-hover:text-brand-accent self-end">
           OPEN FORM <i data-lucide="arrow-right" class="w-3 h-3"></i>
@@ -540,17 +652,12 @@ function renderHome() {
       </div>
       
       <div class="max-w-7xl mx-auto w-full relative z-10 text-center">
-        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md mb-8">
-          <span class="w-2 h-2 rounded-full bg-brand-accent animate-pulse"></span>
-          <span class="text-xs font-medium uppercase tracking-widest text-white/60">The Future of Education is Here</span>
-        </div>
-        
         <h1 class="text-5xl md:text-8xl lg:text-9xl font-bold tracking-tighter mb-8 leading-tight">
           SKILL<span class="text-gradient">POINT</span>
         </h1>
         
         <p class="max-w-2xl mx-auto text-xl text-white/40 mb-4 leading-relaxed">
-          A private repository for high-yield IGCSE & A-Level notes and academic resources.
+          A private repository for high-yield IGCSE, AS Level (A1) & A level (A2) notes and academic resources.
         </p>
         <p class="text-xs font-mono text-brand-accent/40 mb-12">
           Note: This is a private repository and is not to be shared ;)
@@ -560,9 +667,6 @@ function renderHome() {
           <a href="#/subjects" class="px-8 py-4 bg-brand-accent text-black rounded-full font-bold flex items-center gap-2 hover:scale-105 transition-transform shadow-[0_0_30px_rgba(0,255,136,0.2)]">
             Explore Subjects <i data-lucide="arrow-right" class="w-5 h-5"></i>
           </a>
-          <button class="px-8 py-4 glass rounded-full font-bold hover:bg-white/10 transition-colors">
-            Our Methods
-          </button>
         </div>
       </div>
     </section>
@@ -638,7 +742,8 @@ function renderSubjects() {
   // Separate subjects by category
   const categories = {
     'IGCSE': SUBJECTS_LIST.filter(s => s.category === 'IGCSE'),
-    'A-Level': SUBJECTS_LIST.filter(s => s.category === 'A-Level')
+    'AS Level (A1)': SUBJECTS_LIST.filter(s => s.category === 'AS Level (A1)'),
+    'A level (A2)': SUBJECTS_LIST.filter(s => s.category === 'A level (A2)')
   };
 
   app.innerHTML = `
@@ -693,6 +798,42 @@ function renderSubjectExplorer(subjectId, section) {
 
   if (!subject) {
     render404();
+    return;
+  }
+
+  if (subject.isParent) {
+    app.innerHTML = `
+      <div class="min-h-screen pt-32 pb-20 px-6">
+        <div class="max-w-7xl mx-auto">
+          <div class="mb-16">
+            <a href="#/subjects" class="inline-flex items-center gap-2 text-white/30 hover:text-brand-accent transition-colors mb-6 group">
+              <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i> Back to all subjects
+            </a>
+            <h1 class="text-7xl font-bold tracking-tighter">${subject.title} <span class="text-gradient">Specializations</span></h1>
+            <p class="text-white/40 mt-4 text-xl italic font-serif">Please select a specialized module below.</p>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            ${subject.subSubjects.map(subId => {
+              const sub = CURRICULUM_DATA[subId];
+              return `
+                <a href="#/subjects/${subId}" class="group p-10 glass rounded-[2.5rem] border border-white/5 hover:border-brand-accent/50 transition-all duration-500 text-center flex flex-col items-center">
+                  <div class="w-20 h-20 bg-brand-accent/10 rounded-3xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+                    <i data-lucide="calculator" class="text-brand-accent w-10 h-10"></i>
+                  </div>
+                  <h3 class="text-3xl font-bold mb-4">${sub.title.replace(' (Mathematics)', '')}</h3>
+                  <p class="text-white/30 text-sm mb-8 uppercase tracking-widest font-mono">${sub.category} • ${sub.code}</p>
+                  <div class="flex items-center gap-2 text-brand-accent font-bold">
+                    Open Module <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-2 transition-transform"></i>
+                  </div>
+                </a>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      </div>
+    `;
+    if (window.lucide) window.lucide.createIcons();
     return;
   }
 
@@ -770,7 +911,7 @@ function renderSectionContent(subject, section) {
         html += `</div>`;
       }
       
-      // Handle resource-based notes (A-Level style)
+      // Handle resource-based notes (A1 & A2 style)
       if (subject.noteResources && subject.noteResources.length > 0) {
         const categories = [...new Set(subject.noteResources.map(r => r.category))];
         html += categories.map(cat => `
@@ -802,7 +943,7 @@ function renderSectionContent(subject, section) {
         `).join('');
       }
       
-      return html || renderEmptyState('No notes available yet.');
+      return html || renderEmptyState('Resource notes for this subject will be updated soon.');
 
     case 'topical':
       if (subject.topicalQuestions && subject.topicalQuestions.length > 0) {
@@ -949,6 +1090,97 @@ function renderNotesPage(subjectId, chapterId, subChapterId) {
               </li>
             </ul>
           </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderCredits() {
+  const app = document.getElementById('app');
+  app.innerHTML = `
+    <div class="min-h-screen pt-32 pb-20 px-6">
+      <div class="max-w-4xl mx-auto">
+        <div class="mb-16 text-center">
+          <span class="text-brand-accent font-mono text-sm uppercase tracking-[0.3em] mb-4 block">Acknowledgements</span>
+          <h1 class="text-6xl font-bold tracking-tighter mb-8">Resource <span class="text-gradient">Credits</span></h1>
+          <p class="text-xl text-white/50 leading-relaxed max-w-2xl mx-auto">
+            SkillPoint is an educational aggregator designed to provide easier access to high-quality academic resources. We do not own this content and give full credit to the incredible creators below. We wouldn't be where we are without these sources!
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+          <!-- Websites -->
+          <div class="glass p-8 rounded-3xl border border-white/5">
+            <h2 class="text-2xl font-bold mb-8 flex items-center gap-3">
+              <i data-lucide="globe" class="text-brand-accent"></i> Websites
+            </h2>
+            <div class="space-y-6">
+              <div>
+                <a href="https://oalevelnotes.com/" target="_blank" class="text-lg font-bold hover:text-brand-accent transition-colors block">OALevel Notes</a>
+                <p class="text-sm text-white/30 uppercase font-mono tracking-tighter">oalevelnotes.com</p>
+              </div>
+              <div>
+                <a href="https://crackalevel.wordpress.com/" target="_blank" class="text-lg font-bold hover:text-brand-accent transition-colors block">Crack A level</a>
+                <p class="text-sm text-white/30 uppercase font-mono tracking-tighter">crackalevel.wordpress.com</p>
+              </div>
+              <div>
+                <a href="https://papacambridge.com/" target="_blank" class="text-lg font-bold hover:text-brand-accent transition-colors block">Papa Cambridge</a>
+                <p class="text-sm text-white/30 uppercase font-mono tracking-tighter">papacambridge.com</p>
+              </div>
+              <div>
+                <a href="https://cognito.org/" target="_blank" class="text-lg font-bold hover:text-brand-accent transition-colors block">Cognito (Very useful!)</a>
+                <p class="text-sm text-white/30 uppercase font-mono tracking-tighter">cognito.org</p>
+              </div>
+              <div>
+                <a href="https://znotes.org/" target="_blank" class="text-lg font-bold hover:text-brand-accent transition-colors block">ZNotes</a>
+                <p class="text-sm text-white/30 uppercase font-mono tracking-tighter">znotes.org</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- YouTube & Reddit -->
+          <div class="space-y-12">
+            <div class="glass p-8 rounded-3xl border border-white/5">
+              <h2 class="text-2xl font-bold mb-8 flex items-center gap-3">
+                <i data-lucide="youtube" class="text-brand-accent"></i> YouTube Channels
+              </h2>
+              <div class="space-y-6">
+                <div>
+                  <a href="https://www.youtube.com/@prosperityacademics" target="_blank" class="font-bold hover:text-brand-accent transition-colors block">Prosperity Academics</a>
+                </div>
+                <div>
+                  <a href="https://youtube.com/megalecture" target="_blank" class="font-bold hover:text-brand-accent transition-colors block">Mega Lecture</a>
+                </div>
+                <div>
+                  <a href="https://www.youtube.com/@Cognitoedu" target="_blank" class="font-bold hover:text-brand-accent transition-colors block">Cognito</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="glass p-8 rounded-3xl border border-white/5">
+              <h2 class="text-2xl font-bold mb-8 flex items-center gap-3">
+                <i data-lucide="users" class="text-brand-accent"></i> Communities
+              </h2>
+              <div class="space-y-6">
+                <div>
+                  <span class="font-bold block italic font-serif">r/IGCSE</span>
+                  <p class="text-sm text-white/40">Also their dedicated Discord server</p>
+                </div>
+                <div>
+                  <span class="font-bold block italic font-serif">r/Alevels</span>
+                </div>
+                <div>
+                  <span class="font-bold block italic font-serif">r/Alevel</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-20 text-center p-12 glass rounded-[3rem] border border-white/10">
+           <i data-lucide="heart" class="w-12 h-12 text-red-500 mx-auto mb-6"></i>
+           <p class="text-xl font-bold italic font-serif">Thank you to all the educators and students who keep these platforms alive!</p>
         </div>
       </div>
     </div>

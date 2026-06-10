@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SkillPoint - IGCSE & A-Level Hub</title>
+    <title>SkillPoint - IGCSE & AS Level (A1) Hub</title>
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -59,6 +59,9 @@
           <a href="#/subjects" data-nav-link="/subjects" class="flex items-center gap-2 px-6 py-2 rounded-full text-sm font-medium transition-all hover:text-brand-accent">
             <i data-lucide="book-open" class="w-4 h-4"></i> Subjects
           </a>
+          <a href="#/credits" data-nav-link="/credits" class="flex items-center gap-2 px-6 py-2 rounded-full text-sm font-medium transition-all hover:text-brand-accent">
+            <i data-lucide="award" class="w-4 h-4"></i> Credits
+          </a>
         </div>
       </div>
     </nav>
@@ -73,21 +76,16 @@
         
         <!-- Pro Viewer Toolbar -->
         <div class="h-14 bg-[#141414] flex items-center justify-between px-4 border-b border-white/5 z-20">
-          <!-- Left: Nav -->
+          <!-- Left: Logo/Menu -->
           <div class="flex items-center gap-4">
             <button class="p-2 hover:bg-white/10 rounded-lg transition-colors text-white/60"><i data-lucide="menu" class="w-5 h-5"></i></button>
-            <div class="flex items-center gap-2 bg-[#252525] px-2 py-1 rounded-md border border-white/5">
-              <button id="p-prev" class="p-1 hover:text-brand-accent transition-colors text-white/40"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
-              <div class="flex items-center gap-2 px-1">
-                <span id="p-current" class="text-xs font-mono font-bold">1</span>
-                <span class="text-[10px] text-white/20 uppercase tracking-tighter">of</span>
-                <span id="p-total" class="text-xs font-mono text-white/40">16</span>
-              </div>
-              <button id="p-next" class="p-1 hover:text-brand-accent transition-colors text-white/40"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+            <div class="hidden sm:flex items-center gap-2">
+              <i data-lucide="file-text" class="w-4 h-4 text-brand-accent"></i>
+              <span class="text-[10px] text-white/40 font-mono tracking-widest uppercase">Secure PDF Reader</span>
             </div>
           </div>
 
-          <!-- Center: Zoom & History -->
+          <!-- Center: History (Keep for Drawing) -->
           <div class="hidden md:flex items-center gap-6">
             <div class="flex items-center gap-2">
               <button id="btn-undo" class="p-1.5 hover:bg-white/10 rounded-md transition-all text-white/20 disabled:opacity-30 disabled:cursor-not-allowed" title="Undo"><i data-lucide="undo" class="w-4 h-4"></i></button>
@@ -95,17 +93,13 @@
             </div>
             
             <div class="w-[1px] h-4 bg-white/10"></div>
-
-            <div class="flex items-center gap-3">
-              <button id="z-minus" class="p-1.5 hover:bg-white/10 rounded-md transition-all text-white/40"><i data-lucide="minus" class="w-4 h-4"></i></button>
-              <div id="zoom-val" class="bg-[#252525] px-3 py-1 rounded-md text-[11px] font-mono border border-white/5 text-white/60 min-w-[60px] text-center">100%</div>
-              <button id="z-plus" class="p-1.5 hover:bg-white/10 rounded-md transition-all text-white/40"><i data-lucide="plus" class="w-4 h-4"></i></button>
-            </div>
+            
+            <div class="text-[10px] text-white/20 font-mono tracking-widest uppercase">Annotate Mode</div>
           </div>
 
           <!-- Right: Action Tools -->
           <div class="flex items-center gap-1 sm:gap-2">
-            <div class="hidden sm:flex items-center gap-1 mr-2 px-1 border-r border-white/10">
+            <div class="flex items-center gap-1 mr-2 px-1 border-r border-white/10">
               <button id="tool-pointer" class="p-2 text-brand-accent bg-brand-accent/10 rounded-lg tool-btn active" data-tool="pointer" title="Select"><i data-lucide="mouse-pointer-2" class="w-4 h-4"></i></button>
               <button id="tool-text" class="p-2 hover:bg-white/10 rounded-lg transition-colors text-white/40 tool-btn" data-tool="text" title="Text Resource"><i data-lucide="type" class="w-4 h-4"></i></button>
               <button id="tool-pen" class="p-2 hover:bg-white/10 rounded-lg transition-colors text-white/40 tool-btn" data-tool="pen" title="Pen Tool"><i data-lucide="pen-tool" class="w-4 h-4"></i></button>
@@ -172,22 +166,18 @@
         </div>
 
         <!-- Main Document Stage -->
-        <div class="flex-1 w-full relative bg-[#1a1a1a] flex items-center justify-center overflow-hidden p-4">
-          <div id="viewer-stage" class="w-full h-full max-w-5xl shadow-[0_30px_60px_rgba(0,0,0,0.5)] bg-white/5 rounded-sm relative overflow-hidden origin-top transition-transform duration-300">
-            <!-- Clipping wrapper to hide browser UI -->
-            <div class="absolute inset-x-0 top-0 bottom-0 overflow-hidden">
-              <iframe id="preview-iframe" src="" class="w-full h-[calc(100%+80px)] -mt-[40px] border-none"></iframe>
+        <div class="flex-1 w-full relative bg-[#1a1a1a] flex items-center justify-center overflow-hidden p-0 md:p-4">
+          <div id="viewer-stage" class="w-full h-full max-w-7xl shadow-[0_30px_60px_rgba(0,0,0,0.5)] bg-black rounded-sm relative transition-transform duration-300">
+            <!-- Native PDF Viewer Wrapper -->
+            <div class="absolute inset-0 z-0">
+              <iframe id="preview-iframe" src="" class="w-full h-full border-none"></iframe>
             </div>
             
             <!-- Canvas Overlay for Drawing -->
-            <canvas id="viewer-canvas" class="absolute inset-0 z-10 pointer-events-none opacity-0 transition-opacity duration-300"></canvas>
-
-            <!-- Custom Sidebar Overlay (Visual Purely) -->
-            <div class="absolute left-0 top-0 bottom-0 w-12 bg-black/40 border-r border-white/5 hidden lg:flex flex-col items-center py-6 gap-6 z-20">
-              <i data-lucide="layers" class="w-5 h-5 text-white/20 hover:text-brand-accent cursor-pointer"></i>
-              <i data-lucide="search" class="w-5 h-5 text-white/20 hover:text-brand-accent cursor-pointer"></i>
-              <i data-lucide="bookmark" class="w-5 h-5 text-white/20 hover:text-brand-accent cursor-pointer"></i>
-            </div>
+            <canvas id="viewer-canvas" class="absolute inset-0 z-10 pointer-events-none opacity-0"></canvas>
+            
+            <!-- Text Hit Boxes (for dragging when in pointer mode) -->
+            <div id="hit-boxes" class="absolute inset-0 z-20 pointer-events-none overflow-hidden text-black"></div>
           </div>
           
           <div id="preview-loader" class="absolute inset-0 flex items-center justify-center bg-[#1a1a1a] z-30 transition-opacity duration-500">

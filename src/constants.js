@@ -19,7 +19,7 @@ export const PHYSICS_AL = {
   id: 'physics-al',
   title: 'Physics',
   code: '9702',
-  category: 'A-Level',
+  category: 'AS Level (A1)',
   notes: [],
   noteResources: [
     { id: 'al-physics-combined-1', title: 'Combined Chapters Notes - 1', url: 'https://drive.google.com/file/d/1KFgAoEAbd7r-LcW9cjU36xN5L1j8HqWa/view?usp=sharing', type: 'pdf', category: 'Combined Chapters Notes' },
@@ -78,11 +78,18 @@ export const PHYSICS_AL = {
   resources: []
 };
 
+export const MATH_IGCSE = { id: 'math-igcse', title: 'Mathematics', code: '0580 & 0980', category: 'IGCSE', notes: [], topicalQuestions: [], textbooks: [], resources: [] };
+export const BIOLOGY_IGCSE = { id: 'biology-igcse', title: 'Biology', code: '0610 & 0970', category: 'IGCSE', notes: [], noteResources: [{ title: 'IGCSE Biology - ASTRA', url: 'https://drive.google.com/file/d/1NqXYoz-GX_2YFJ9meuGQJg2JpPv-6G7e/view?usp=drive_link', category: 'Revision Notes' }, { title: 'IGCSE Biology - CattaStudies', url: 'https://drive.google.com/file/d/1dUJC57ierZk1cInE9iuykYf7CwrcMEVv/view?usp=drive_link', category: 'Revision Notes' }], topicalQuestions: [], textbooks: [], resources: [] };
+export const CHEMISTRY_IGCSE = { id: 'chemistry-igcse', title: 'Chemistry', code: '0610 & 0971', category: 'IGCSE', notes: [], noteResources: [{ title: 'IGCSE Chemistry - ASTRA', url: 'https://drive.google.com/file/d/1QgvgXVn4XFp1e3vXwMS_gCEVv-kf-j_h/view?usp=drive_link', category: 'Revision Notes' }, { title: 'IGCSE Chemistry - CattaStudies', url: 'https://drive.google.com/file/d/1JumJECHH0LZKjMukLceUHLxVu1OWMWzZ/view?usp=drive_link', category: 'Revision Notes' }], topicalQuestions: [], textbooks: [], resources: [] };
+export const ICT_IGCSE = { id: 'ict-igcse', title: 'ICT', code: '0417', category: 'IGCSE', notes: [], topicalQuestions: [], textbooks: [], resources: [] };
+export const IT_AL = { id: 'it-al', title: 'IT', code: '9626', category: 'AS Level (A1)', notes: [], topicalQuestions: [], textbooks: [], resources: [] };
+export const MATH_AL = { id: 'math-al', title: 'Mathematics', code: '9709', category: 'AS Level (A1)', notes: [], topicalQuestions: [], textbooks: [], resources: [] };
+
 export const CHEMISTRY_AL = {
   id: 'chemistry-al',
   title: 'Chemistry',
   code: '9701',
-  category: 'A-Level',
+  category: 'AS Level (A1)',
   notes: [],
   noteResources: [
     { title: 'AS Physical Chemistry', url: 'https://drive.google.com/file/d/1-vJE6G0F9pusGQYC66PrJnN0eOgR_wPb/view?usp=drivesdk', category: 'General Notes' },
@@ -94,10 +101,6 @@ export const CHEMISTRY_AL = {
     { title: 'Definitions', url: 'https://drive.google.com/file/d/1cwtttOn44vUAC2YCUgGKtPaMeHl-kqVA/view?usp=drivesdk', category: 'Revision' },
     { title: 'All Reactions', url: 'https://drive.google.com/file/d/1jpF5-i-qYcM-buYwIwJOSMI4hoyjkbk0/view?usp=drivesdk', category: 'Revision' },
     { title: 'Revision List', url: 'https://drive.google.com/file/d/1oqFfrL38kE-GCgQIm8D_CWzSs_NUN02D/view?usp=drivesdk', category: 'Revision' },
-    { title: 'AS Organic Chemistry (SME)', url: 'https://drive.google.com/file/d/105PpnyTQRFQImiU-7TecfdwP1LJJxdxQ/view?usp=drivesdk', category: 'SaveMyExams' },
-    { title: 'AS Inorganic Chemistry (SME)', url: 'https://drive.google.com/file/d/1A10wBoVuxtuob2C71WrpU0YL5ihdJadM/view?usp=drivesdk', category: 'SaveMyExams' },
-    { title: 'AS Analytic Notes (SME)', url: 'https://drive.google.com/file/d/1TVi-Qj4n0XMBg_ArsKryeTtU1tdkNI8F/view?usp=drivesdk', category: 'SaveMyExams' },
-    { title: 'AS Physical Chemistry (SME)', url: 'https://drive.google.com/file/d/1gdY3ove7A_iKz_NZFo_Po6svExU21ewN/view?usp=drivesdk', category: 'SaveMyExams' },
     { title: 'Analytical Techniques', url: 'https://drive.google.com/file/d/128sMaes9cwUZYYCoSm_7nYdm5hCAzokK/view?usp=drivesdk', category: 'Rocket Revise' },
     { title: 'Organic Synthesis', url: 'https://drive.google.com/file/d/1rDRLKnVZfWTwKn2oARlQy9bUk8Iebhbj/view?usp=drivesdk', category: 'Rocket Revise' },
     { title: 'Carbonyl Compounds', url: 'https://drive.google.com/file/d/10VdJzKcOuIO4FUMi5CdBUqRXGfjSqBgf/view?usp=drivesdk', category: 'Rocket Revise' },
@@ -165,7 +168,7 @@ export const BIOLOGY_AL = {
   id: 'biology-al',
   title: 'Biology',
   code: '9700',
-  category: 'A-Level',
+  category: 'AS Level (A1)',
   notes: [],
   noteResources: [
     { title: 'AS Biology Summary', url: 'https://drive.google.com/file/d/15J83TNNZBZiFrI0yqykhMQy7iN-m2jAm/view?usp=drivesdk', category: 'Combined' },
@@ -214,12 +217,286 @@ export const BIOLOGY_AL = {
   resources: []
 };
 
-export const MATH_IGCSE = { id: 'math-igcse', title: 'Mathematics', code: '0580 & 0980', category: 'IGCSE', notes: [], topicalQuestions: [], textbooks: [], resources: [] };
-export const BIOLOGY_IGCSE = { id: 'biology-igcse', title: 'Biology', code: '0610 & 0970', category: 'IGCSE', notes: [], noteResources: [{ title: 'IGCSE Biology - ASTRA', url: 'https://drive.google.com/file/d/1NqXYoz-GX_2YFJ9meuGQJg2JpPv-6G7e/view?usp=drive_link', category: 'Revision Notes' }, { title: 'IGCSE Biology - CattaStudies', url: 'https://drive.google.com/file/d/1dUJC57ierZk1cInE9iuykYf7CwrcMEVv/view?usp=drive_link', category: 'Revision Notes' }], topicalQuestions: [], textbooks: [], resources: [] };
-export const CHEMISTRY_IGCSE = { id: 'chemistry-igcse', title: 'Chemistry', code: '0610 & 0971', category: 'IGCSE', notes: [], noteResources: [{ title: 'IGCSE Chemistry - ASTRA', url: 'https://drive.google.com/file/d/1QgvgXVn4XFp1e3vXwMS_gCEVv-kf-j_h/view?usp=drive_link', category: 'Revision Notes' }, { title: 'IGCSE Chemistry - CattaStudies', url: 'https://drive.google.com/file/d/1JumJECHH0LZKjMukLceUHLxVu1OWMWzZ/view?usp=drive_link', category: 'Revision Notes' }], topicalQuestions: [], textbooks: [], resources: [] };
-export const ICT_IGCSE = { id: 'ict-igcse', title: 'ICT', code: '0417', category: 'IGCSE', notes: [], topicalQuestions: [], textbooks: [], resources: [] };
-export const IT_AL = { id: 'it-al', title: 'IT', code: '9626', category: 'A-Level', notes: [], topicalQuestions: [], textbooks: [], resources: [] };
-export const MATH_AL = { id: 'math-al', title: 'Mathematics', code: '9709', category: 'A-Level', notes: [], topicalQuestions: [], textbooks: [], resources: [] };
+export const CHEMISTRY_A2 = {
+  id: 'chemistry-a2',
+  title: 'Chemistry',
+  code: '9701',
+  category: 'A level (A2)',
+  notes: [],
+  noteResources: [
+    { title: 'Chemistry More Paper 5 Notes', url: 'https://drive.google.com/file/d/1lujX2qP27qWv5LQivYF0CpkM5Stqrc0L/view?usp=drivesdk', category: 'Paper 5' },
+    { title: 'Chemistry Paper 5 Life Saving Knowledge', url: 'https://drive.google.com/file/d/1N7PGoElK-fdY6CUcprUk87GrVvjDnN--/view?usp=drivesdk', category: 'Paper 5' },
+    { title: 'Chemistry P5 notes', url: 'https://drive.google.com/file/d/1DxCsmjpghpbEi3JICxXo7kY0fsDAJTes/view?usp=drivesdk', category: 'Paper 5' },
+    { title: 'Chem FAQ’s (P4 AND P5)', url: 'https://drive.google.com/file/d/1MGf7GYk-8Z6JuSTtgUGEsCYSzLuGVyv5/view?usp=drivesdk', category: 'General' },
+    { title: 'Group 17', url: 'https://drive.google.com/file/d/1SDXLNwnp5wME4RIwlpWSwL_NVkC3xPSM/view?usp=drivesdk', category: 'Inorganic' },
+    { title: 'Reactions that you need to memorise', url: 'https://drive.google.com/file/d/1vVarbQbeCIp9Mgb_OTtA2X6lEW7jSCM6/view?usp=drivesdk', category: 'Organic' },
+    { title: 'Chemistry Definitions from past papers', url: 'https://drive.google.com/file/d/11GHXnDZDIA87G_D67CrWLWDtyPrSHvOw/view?usp=drivesdk', category: 'General' },
+    { title: 'Chemistry Notes by OALEVELNOTES', url: 'https://drive.google.com/file/d/1YgUQTXV933NHLHXZu2b4hCUCBxNO9Q25/view?usp=drivesdk', category: 'General' },
+    { title: 'Organic Cyclic Chain', url: 'https://drive.google.com/file/d/12IqFObL3cBAnE-ibHvfGj6BkTCr0nH2-/view?usp=drivesdk', category: 'Organic' },
+    { title: 'Organic Straight Chain', url: 'https://drive.google.com/file/d/1oO7vr3iDaC4DCN2xyP_O8FuIrKmmwKRH/view?usp=drivesdk', category: 'Organic' },
+    { title: 'CHEM P5 FAQ', url: 'https://drive.google.com/file/d/11ZhxmAyLjMt6MBxOnsg02vSrK5HKDqn4/view?usp=drivesdk', category: 'Paper 5' },
+    { title: 'Organic Chemistry Revision', url: 'https://drive.google.com/file/d/1w71DGdwFyaHfoim4_mDVKHpHQ6ReiXzb/view?usp=drivesdk', category: 'Organic' },
+    { title: 'A2 Organic Reactions (Bad Quality Scan)', url: 'https://drive.google.com/file/d/1XregcU1M6of7YnIjbq9rS1ogB_Z00jgP/view?usp=drivesdk', category: 'Organic' },
+    { title: 'Map for Organic', url: 'https://drive.google.com/file/d/1WzdOnPsFiLbVDJkgM7csjT-ltFUWZ57i/view?usp=drivesdk', category: 'Organic' },
+  ],
+  topicalQuestions: [],
+  textbooks: [
+    { title: 'Cambridge Iinternational As-A level Chemistry', description: 'Peter Cann and Peter Hughes', url: 'https://drive.google.com/file/d/11P829PfmydsMl3Bseiiy554oKqH4TZJ0/view?usp=drivesdk' },
+    { title: 'Cambridge International As-A level Chemistry Coursebook', description: 'Lawrie Ryan and Roger Norris', url: 'https://drive.google.com/file/d/12JSQ2mOs4ePX8E6Z6IowjgC2I6ADZZdh/view?usp=drivesdk' },
+    { title: 'As-A Chemistry Executive Preview', description: 'Lawrie Ryan & Roger Norris', url: 'https://drive.google.com/file/d/1wWytxD1qxVNmFopEXjMSLA_JxSkXl16-/view?usp=drivesdk' },
+    { title: 'As-A level Chemistry Practical Workbook', description: 'Roger Norris and Mike Woost', url: 'https://drive.google.com/file/d/15-njPCzFN_pjQqZy_sfjWtaKZOWjXggg/view?usp=drivesdk' },
+  ],
+  resources: []
+};
+
+export const PHYSICS_A2 = {
+  id: 'physics-a2',
+  title: 'Physics',
+  code: '9702',
+  category: 'A level (A2)',
+  notes: [],
+  noteResources: [
+    { title: 'Useful Links', url: 'https://drive.google.com/file/d/1PI0QE9x42oUhj2jlM1rH8b89phn54hge/view?usp=drivesdk', category: 'General' },
+    { title: 'Interactive example candidate responses', url: 'https://drive.google.com/file/d/1HzqvKiIfovLEsTIOomwiNKpavgYsadx4/view?usp=drivesdk', category: 'General' },
+    { title: 'Topic connections', url: 'https://drive.google.com/file/d/1jK5PattyUWnDF0dioVs_a0RO97sySbS-/view?usp=drivesdk', category: 'General' },
+    { title: 'Handwritten summary notes by adbul rehman', url: 'https://drive.google.com/file/d/1o3-aZHCw2FmpVmGh24DI0267wCUm6lNa/view?usp=drivesdk', category: 'Handwritten Notes' },
+    { title: 'Znotes practical notes', url: 'https://drive.google.com/file/d/1BUmz4Pp3jzcefejqOMd209-_wZ26ZFnJ/view?usp=drivesdk', category: 'Practical' },
+    { title: 'Formula sheet', url: 'https://drive.google.com/file/d/1g9D4nVwMs3WbWpIJOrW_NbZhWoA7NqtA/view?usp=drivesdk', category: 'General' },
+    { title: 'Summarized notes', url: 'https://drive.google.com/file/d/138_9lrp7SIYmk4cHYObxCA2un7uWb6-n/view?usp=drivesdk', category: 'General' },
+    { title: 'Steps to solving physics problems', url: 'https://drive.google.com/file/d/1wMqLx9mkB7prSjbAJfWcafZzgrqbWteU/view?usp=drivesdk', category: 'General' },
+    { title: 'Physics Notes', url: 'https://drive.google.com/file/d/13-c3qaFp6MzuoHeHFLOSDCHtz9WSEKxA/view?usp=drivesdk', category: 'General' },
+    { title: 'Phy P5 Complete Prep Guide', url: 'https://drive.google.com/file/d/1emvzeeWIKQi4DCQE3sHX9mpRg2CMeRwB/view?usp=drivesdk', category: 'Paper 5' },
+    { title: 'Reaction Kinetics', url: 'https://drive.google.com/file/d/1Ks_RVDjPh0bKZFnN-dBOk96zo3avo32w/view?usp=drivesdk', category: 'General' },
+    { title: 'Copy of AS Physical Chemistry', url: 'https://drive.google.com/file/d/1n1AHXmSouk-ZtJqHgsx_eierSGik3gVp/view?usp=drivesdk', category: 'General' },
+    // Handwritten Notes Folder
+    { title: '6-practical circuits', url: 'https://drive.google.com/file/d/1-Lb2sYqs7bqaXfVtFQoCy0pU9HoO9F9_/view?usp=drivesdk', category: 'Handwritten' },
+    { title: '8-superposition of waves', url: 'https://drive.google.com/file/d/11BhY-cXICoP37Jasp_ZHI0xdguXPrtBM/view?usp=drivesdk', category: 'Handwritten' },
+    { title: '4-electric current, pd & resistance', url: 'https://drive.google.com/file/d/15Y0E3a_i78jc-vgMk5AiTGvk0PF7q41G/view?usp=drivesdk', category: 'Handwritten' },
+    { title: '10-forces, vectors & moments', url: 'https://drive.google.com/file/d/16PV8A3pK86nFABp8mCMxifHlFzm5fOTZ/view?usp=drivesdk', category: 'Handwritten' },
+    { title: '9-stationary waves', url: 'https://drive.google.com/file/d/19tAXANt4ljRnaH-LdhvCxhem-K5Jjulz/view?usp=drivesdk', category: 'Handwritten' },
+    { title: '7-waves', url: 'https://drive.google.com/file/d/1ArvdKAJBtL75627LxbW2SahPfHwry-pY/view?usp=drivesdk', category: 'Handwritten' },
+    { title: '2-deformation of solids', url: 'https://drive.google.com/file/d/1U4qYwV12wM_DxxWtmSqYYi-cdq64ODg_/view?usp=drivesdk', category: 'Handwritten' },
+    { title: '5-resistance & resistivity', url: 'https://drive.google.com/file/d/1WgXdXsIHv7fyDSoXNnzcWId5Ln9h6cgy/view?usp=drivesdk', category: 'Handwritten' },
+    { title: '1-units & measurements', url: 'https://drive.google.com/file/d/1ltKhH0Uly1LCFCtHzVdhqWmNoapyGUeG/view?usp=drivesdk', category: 'Handwritten' },
+    { title: '3-electric fields', url: 'https://drive.google.com/file/d/1riV2nv8sdkd6qOB59oBxAgvdgbKBj0zM/view?usp=drivesdk', category: 'Handwritten' },
+    // PPT Folder
+    { title: '8 - Superposition', url: 'https://drive.google.com/file/d/11NZE3N4JiBh9S-zkKa-up16F2X6Tvw8k/view?usp=drivesdk', category: 'PPTs' },
+    { title: '10 - D.C. circuits', url: 'https://drive.google.com/file/d/1AjBvh8ge7HQSGw7ra_Jr1WqQd7b_4cHj/view?usp=drivesdk', category: 'PPTs' },
+    { title: '1 - Physical quantities & units', url: 'https://drive.google.com/file/d/1CnWEuKcjb7hFMYTF1lAjf1FTezBynDQi/view?usp=drivesdk', category: 'PPTs' },
+    { title: '2 - Kinematics', url: 'https://drive.google.com/file/d/1p8PR8gYINYIKvu0WItIOGHIQ975F0gom/view?usp=drivesdk', category: 'PPTs' },
+    { title: 'Measurement techniques', url: 'https://drive.google.com/file/d/1xFGD97ChvPFBKMeCTUtVMShyVGDJzKYX/view?usp=drivesdk', category: 'PPTs' },
+    { title: '6 - Deformation of solids', url: 'https://drive.google.com/file/d/16uTzbw7KenXS-u0hflEqn-JjngVqUvCr/view?usp=drivesdk', category: 'PPTs' },
+    { title: '11 - Particle physics', url: 'https://drive.google.com/file/d/1GiP27DjIR0Fnc1bYVAZfFTJKzoCIz56L/view?usp=drivesdk', category: 'PPTs' },
+    { title: '5 - Work, energy and power', url: 'https://drive.google.com/file/d/1OU31v-88JGKyakf0P1logMrc-M9D6swd/view?usp=drivesdk', category: 'PPTs' },
+    { title: '3 - Dynamics', url: 'https://drive.google.com/file/d/1SNeCKnra_isBQit5kRlUQNt3raStchDB/view?usp=drivesdk', category: 'PPTs' },
+    { title: '7 - Waves', url: 'https://drive.google.com/file/d/1WEWk-UdTkZ9iH4WYBReP8Qmrbd39ZzB8/view?usp=drivesdk', category: 'PPTs' },
+    { title: '9 - Electricity', url: 'https://drive.google.com/file/d/1_Uw6ELP8wS5BBga7B8nA2L2yQtU6Bz4R/view?usp=drivesdk', category: 'PPTs' },
+    { title: 'Practical skills', url: 'https://drive.google.com/file/d/1lzRfTmQkKZcVH4vY06-wm3-ZeLu1aBtU/view?usp=drivesdk', category: 'PPTs' },
+    { title: '4 - Forces, density and pressure', url: 'https://drive.google.com/file/d/1yo75RunVKY4eSJQgsJvJTQIe8XkkRl1_/view?usp=drivesdk', category: 'PPTs' },
+    // Definitions Folder
+    { title: 'defintions list', url: 'https://drive.google.com/file/d/1PMu9wUfgGaM3fgEpA8Zy3MUR56cjdcE0/view?usp=drivesdk', category: 'Definitions' },
+    { title: 'Physics Definitions from Past Papers', url: 'https://drive.google.com/file/d/1lEBtYfgzX5Z1PKlq6oXvobqgHZbKKv-M/view?usp=drivesdk', category: 'Definitions' },
+    { title: 'A2 Physics Definitions', url: 'https://drive.google.com/file/d/1XUKyHH9qzyk3q4izd0RbcsBYrqbTSo2S/view?usp=drivesdk', category: 'Definitions' },
+  ],
+  topicalQuestions: [
+    // Solved Folder
+    { title: 'medical physics', url: 'https://drive.google.com/file/d/181mXB2Xak5rFPBOK04f1Fp1vr1gJ-Ess/view?usp=drivesdk', category: 'Solved' },
+    { title: 'magnetic fields', url: 'https://drive.google.com/file/d/19XS7Xx0N16f-rfZAv_-rApmjjnp3YJxn/view?usp=drivesdk', category: 'Solved' },
+    { title: 'capacitance', url: 'https://drive.google.com/file/d/1Atk27mShrAl01kT6eb3IKXzJdPS7GWMu/view?usp=drivesdk', category: 'Solved' },
+    { title: 'ideal gases - thermodynamics', url: 'https://drive.google.com/file/d/1oVt0FZrdhXXO4OELgbeGP89Hv4CAzd90/view?usp=drivesdk', category: 'Solved' },
+    { title: 'temperature', url: 'https://drive.google.com/file/d/11ywrfE0W40NikhGVJdp41Cr03PjlK1Y-/view?usp=drivesdk', category: 'Solved' },
+    { title: 'electric fields', url: 'https://drive.google.com/file/d/19ZQe5lYTXhkgARtO6AK4WEKR9iImwVK4/view?usp=drivesdk', category: 'Solved' },
+    { title: 'magnetic induction', url: 'https://drive.google.com/file/d/1IfUwEu-XmNEE9VXUScWWUEcM1FZQoCLZ/view?usp=drivesdk', category: 'Solved' },
+    { title: 'gravitational fields', url: 'https://drive.google.com/file/d/1NEySWYz2DCKXPAfpd0gkTxqFVGgE5I1V/view?usp=drivesdk', category: 'Solved' },
+    { title: 'alternating currents', url: 'https://drive.google.com/file/d/1RX3XbGWUHHglka4vuP1u-aAZ5K-EjZOe/view?usp=drivesdk', category: 'Solved' },
+    { title: 'oscillations', url: 'https://drive.google.com/file/d/1c3u4zHobA373ZOX4G6mZcCwGo424x3Ga/view?usp=drivesdk', category: 'Solved' },
+    { title: 'circular motion', url: 'https://drive.google.com/file/d/1cd1m0wkVBUT85IBO_XlSlXEp8lkUqc7i/view?usp=drivesdk', category: 'Solved' },
+    { title: 'quantum physics', url: 'https://drive.google.com/file/d/1_cYPtESxZMmMhv5UE0lh4CyXAkwsrvnP/view?usp=drivesdk', category: 'Solved' },
+    { title: 'nuclear physics', url: 'https://drive.google.com/file/d/1eyfzEq12UqHKI24MOk29vrVMc3pYq4hU/view?usp=drivesdk', category: 'Solved' },
+    // Paper 4 Folder
+    { title: '10- ideal gases ws 2', url: 'https://drive.google.com/file/d/1-kKmSDcU_pVa7xvmcHbN9kGSI3lWfMqx/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '2- oscillations ws 4', url: 'https://drive.google.com/file/d/1E5TE5phByK7ryWlYgdSJ0kDeU817HRKK/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '12- nuclear physics ws 1', url: 'https://drive.google.com/file/d/1ZFee7yZiKFTmFtx3SNu66sFD3wxgaGSu/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '6- magnetic fields ws 3', url: 'https://drive.google.com/file/d/1ZywB8TaFK-Bb1sTp3N0x-p_Jxk9qrLRW/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '2- oscillations ws 2', url: 'https://drive.google.com/file/d/1fP0EcFk0t9gWqDb_7ZfrYjD9mcuEu7X0/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '3- gravitational fields ws 3', url: 'https://drive.google.com/file/d/1jKc4lbB2G7q1-UTAj-1-uTJOntaIo0eM/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '3- gravitational fields ws 2', url: 'https://drive.google.com/file/d/1rnYNU8t7zwmpA1C9wRaOJ0x2opEZ38-x/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '2- oscillations ws 1', url: 'https://drive.google.com/file/d/1-jqkhHRNO0WIWDupSma096F_j7Kis9al/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '7- alternating currents ws 2', url: 'https://drive.google.com/file/d/1-ufbRS2Fh9zKcqtdurY9jUEuCIrAG2mQ/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '4- electric fields ws 2', url: 'https://drive.google.com/file/d/10D_BoUs9892L0e2UenZyzVdHPt9EsobD/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '6- magnetic fields ws 1', url: 'https://drive.google.com/file/d/13E-gK276cP6qQ_tC4bpQXzhs4A9QYR6K/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '5- capactiance ws 2', url: 'https://drive.google.com/file/d/16K0EuGZCbpJL4Ocdo9KRO7SaCiUdtpb5/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '6- magnetic fields ws 8', url: 'https://drive.google.com/file/d/1GPwpOS4B1WYb_0JaHxQZJxIJpDsM1RJr/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '6- magnetic fields ws 2', url: 'https://drive.google.com/file/d/1JK0tgUMIwz3gcSC3RuTFqTGCogGQyUbz/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '8- thermodynamics ws 2', url: 'https://drive.google.com/file/d/1Qp2q6n6HotwId39CiPGXRCLj6F7WXGqg/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '2- oscillations ws 3', url: 'https://drive.google.com/file/d/1RNUUHjcQI6KJHuLTahi-hB2OwEyCwtTY/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '6- magnetic fields ws 6', url: 'https://drive.google.com/file/d/1TPtXE60gFkE_w0R88mfHNlio1N9gvJet/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '1- circular motion ws', url: 'https://drive.google.com/file/d/1X9_s5JMjVKnvQ-1O6HhBYnxyQ9Z5QU4n/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '4- electric fields ws 1', url: 'https://drive.google.com/file/d/1_9gcL6D3h33nsxZZD-se2vbIDFihOf_I/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '6- magnetic fields ws 5', url: 'https://drive.google.com/file/d/1bCsM85u-EIBDVyOnF9K-C7g3gj9hGu5D/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '3- gravitational fields ws 1', url: 'https://drive.google.com/file/d/1bLFoMKF0spkFBNgMS0BZNPqNncFsu_u-/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '4- electric fields ws 5', url: 'https://drive.google.com/file/d/1fsguYhSewXKlgesGARaT8IBe7eTCrPFT/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '9- temperature ws 2', url: 'https://drive.google.com/file/d/1irKG28beTkchyMusPrj1ZgaLqe6T4NVs/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '2- oscillations ws 6', url: 'https://drive.google.com/file/d/1kC3UfGL3WYMtATI9HptWSzBm3r9ynOqR/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '3- gravitational fields ws 4', url: 'https://drive.google.com/file/d/1lzOop_-JUe7356iS5dmE9UmyCeItufS3/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '2- oscillations ws 5', url: 'https://drive.google.com/file/d/1oIlL8GMMPB6JKEtA4uhIGAWkh71ZLLp6/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '6- magnetic fields ws 4', url: 'https://drive.google.com/file/d/1oig3kK_1mdo0SdIEUnz-q733jSsGnUiw/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '4- electric fields ws 3', url: 'https://drive.google.com/file/d/1s-mBM4DlpMV1umcOTvxCqB_oHUNN9ZQ_/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '4- electric fields ws 4', url: 'https://drive.google.com/file/d/1sYGtNfsU9GvsFKGLoRqC5lbVvL2YSJO7/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '5- capactiance ws 3', url: 'https://drive.google.com/file/d/1ss-A3lmh5U2lBDUj5UxD-QwXQx1B6VD3/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '5- capactiance ws 1', url: 'https://drive.google.com/file/d/1vDyyvVUyNmQsD6-Li15G3g0E49y2_oXE/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '3- gravitational fields ws 5', url: 'https://drive.google.com/file/d/1vKdpF0GL4rNwPR0wyhd1jKd-0U3o4Ndk/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '6- magnetic fields ws 7', url: 'https://drive.google.com/file/d/1vmge7bABQc2eWHi_kbDT2ShKps5PNlb1/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '12- nuclear physics ws 3', url: 'https://drive.google.com/file/d/1y7STDT6QUhpZcypV-aChm3WWCFlmJtUB/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '10- ideal gases ws 1', url: 'https://drive.google.com/file/d/12f9gzWQGgRSFt1fY3K-TRww2PdDznjP9/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '12- nuclear physics ws 5', url: 'https://drive.google.com/file/d/14QpBRORWV5rcUXCNY7ykss5RE6l6vNAz/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '13- medical physics ws 3', url: 'https://drive.google.com/file/d/14yuAu53kye3KYs6whVp3h1klc_vJrbJi/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '8- thermodynamics ws 1', url: 'https://drive.google.com/file/d/1H0pEL9deGzXFJatkwnMwKJxvfo575XY2/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '12- nuclear physics ws 2', url: 'https://drive.google.com/file/d/1HoFXEYlZInJcVc3RJDYQNIrS1NxRfr2w/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '9- temperature ws 1', url: 'https://drive.google.com/file/d/1K7dAzsGU23kQQxEsQQFeK_6cFMdgCtj3/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '11- quantum physics ws 4', url: 'https://drive.google.com/file/d/1Km6R37LIhwt8JIQYyzLOpkt8cWmGU3zR/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '11- quantum physics ws 3', url: 'https://drive.google.com/file/d/1LmHSaXhZ64yssFAfbsXmN-tO6roG8SKu/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '13- medical physics ws 2', url: 'https://drive.google.com/file/d/1ONwAJrc0IF1AGvwAeC_qT8_b45HVMij3/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '12- nuclear physics ws 4', url: 'https://drive.google.com/file/d/1Xc61gpUzSPDzKzPALh_eXwlJ5wxeCR3n/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '11- quantum physics ws 2', url: 'https://drive.google.com/file/d/1fQwI8VAFf0KmXrn-CCc6fEviQl0O2gCL/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '10- ideal gases ws 4', url: 'https://drive.google.com/file/d/1hoNHaz_DODMVlUdJomWO6pUs6iDNETpp/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '10- ideal gases ws 3', url: 'https://drive.google.com/file/d/1jl2siJ6c3vi5rBKeb68SPlbIIPrFTowv/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '13- medical physics ws 1', url: 'https://drive.google.com/file/d/1rDgOJ3gYHgS5zOv2bopqNKyQb09EsPPn/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '13- medical physics ws 4', url: 'https://drive.google.com/file/d/1sDSxIEtw23MlujrC4CYVuVZmIhlJybly/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '11- quantum physics ws 1', url: 'https://drive.google.com/file/d/1uFGC5S9Nn5M2rCFygh77JVjr-sABWHNp/view?usp=drivesdk', category: 'Paper 4' },
+    { title: '7- alternating currents ws 1', url: 'https://drive.google.com/file/d/1uX8BS9CFoch8uVM_ojh5KNMFBTwJLTFB/view?usp=drivesdk', category: 'Paper 4' },
+  ],
+  textbooks: [
+    { title: 'cambridge international as & a level physics coursebook', url: 'https://drive.google.com/file/d/1LByZY5BLVcmGmX4eDP4DmKFgSXAN9e80/view?usp=drivesdk' },
+    { title: 'hodder education as & a level physics coursebook', url: 'https://drive.google.com/file/d/1ImIgvkFOjxfwpAQsk4MTCbFMf8U7s994/view?usp=drivesdk' },
+    { title: 'cambridge univeristy press physics as & a level coursebook', url: 'https://drive.google.com/file/d/1aPdHlqPlXXZ2rSDtWyXOluS4qaD94ZyC/view?usp=drivesdk' },
+    { title: 'hodder education cambridge as and a level coursebook', url: 'https://drive.google.com/file/d/15QDmrY3ZqGV3yoYN6S0f0zFWkeaTsXkL/view?usp=drivesdk' },
+    { title: 'cambridge international as & a level physics practical workbook', url: 'https://drive.google.com/file/d/19ofaXeQA_Ditwlw7qkTf2OGEU_zcW3pF/view?usp=drivesdk' },
+    { title: 'cambridge international as & a level physics workbook', url: 'https://drive.google.com/file/d/1kk-dEX5TKR4hX0-CDJTbcD0E6jGYJTxp/view?usp=drivesdk' },
+    { title: 'cambridge international as & a level physics study and revision guide', url: 'https://drive.google.com/file/d/1QiFVo0Zpfgot28C3oYEnPTW9JpIURYaR/view?usp=drivesdk' },
+    { title: 'hodder education as & a level physics revision guide', url: 'https://drive.google.com/file/d/1VZqq9GJNzvloeWT-jBHIWJc26ci4ttNl/view?usp=drivesdk' },
+    { title: 'cambridge international as & a level physics revision guide', url: 'https://drive.google.com/file/d/1xDVapcUW5HCLxq4VbQj0aZCs2vbDQlMm/view?usp=drivesdk' },
+  ],
+  resources: []
+};
+
+export const BIOLOGY_A2 = {
+  id: 'biology-a2',
+  title: 'Biology',
+  code: '9700',
+  category: 'A level (A2)',
+  notes: [],
+  noteResources: [
+    { title: 'Bio paper 4 repeated questions', url: 'https://drive.google.com/file/d/1z-IGdaoCqzlQ66ovlR0-dYVsnUbmh9E0/view?usp=drivesdk', category: 'Paper 4' },
+    { title: 'BIO PastPaper IMPORTANT POINTS', url: 'https://drive.google.com/file/d/1C0SlRiPPYMtIlG1po_QUzQ2uEmWrtnEr/view?usp=drivesdk', category: 'General' },
+    { title: 'Biology Paper 5', url: 'https://drive.google.com/file/d/1iM0L9tG5jI-N8WGxdxa0zY34aMaqC_wm/view?usp=drivesdk', category: 'Paper 5' },
+    { title: 'As level Bio Complete Guide', url: 'https://drive.google.com/file/d/1_3_UGZLrNfqHRuNGBZNS1KMPXHzsBzf3/view?usp=drivesdk', category: 'General' },
+    { title: 'Bio A2 Revision Notes 2', url: 'https://drive.google.com/file/d/1oKiUZxu_Yj549pTjcXSLTXNgP41Ywdm-/view?usp=drivesdk', category: 'General' },
+  ],
+  topicalQuestions: [
+    // Paper 4 Folder
+    { title: 'CHAPTER 6 ( QP & MS )', url: 'https://drive.google.com/file/d/18lMGYJIzRfWF-H9iOZv7ES-qmD987XWW/view?usp=drivesdk', category: 'Paper 4' },
+    { title: 'CHAPTER 5 ( QP & MS )', url: 'https://drive.google.com/file/d/1c7VzoMnV6VNqV8PFMPLGRAnzTdfx-7L5/view?usp=drivesdk', category: 'Paper 4' },
+    { title: 'CHAPTER 4 ( QP & MS )', url: 'https://drive.google.com/file/d/11_IDLMddMSAEKOMmouIheIn7afaLMRhB/view?usp=drivesdk', category: 'Paper 4' },
+    { title: 'CHAPTER 7 ( QP & MS )', url: 'https://drive.google.com/file/d/1nobMN5dhNRXdtYH_z-wyqUGRIty0Mi_l/view?usp=drivesdk', category: 'Paper 4' },
+    { title: 'CHAPTER 8 ( QP & MS )', url: 'https://drive.google.com/file/d/1sZ1U0ZPcoWZ46oCk0mvfgKCc2-fhLP4m/view?usp=drivesdk', category: 'Paper 4' },
+    { title: 'CHAPTER 2 ( QP & MS )', url: 'https://drive.google.com/file/d/1yqdKQNfhZjaiQUjQeJpjWUSBoTAbm98i/view?usp=drivesdk', category: 'Paper 4' },
+    { title: 'CHAPTER 3 ( QP & MS )', url: 'https://drive.google.com/file/d/1J_toCObIBy0HYXOCLkxy0t2OO0Eszxe_/view?usp=drivesdk', category: 'Paper 4' },
+    { title: 'CHAPTER 1 ( QP & MS )', url: 'https://drive.google.com/file/d/1Vd_Cmz_PjShyr9Ixn7Nb4B7OhYxNWqTB/view?usp=drivesdk', category: 'Paper 4' },
+  ],
+  textbooks: [
+    { title: 'As-A level Biology Practical Workbook', description: 'Mary Jones and Matthew Parkin', url: 'https://drive.google.com/file/d/1MtV9F5jas2K1AaY9N6ukf2E6vj9BwiTy/view?usp=drivesdk' },
+    { title: 'Cambridge International As-A level Biology Coursebook', description: 'Mary Jones, Richard Fosbery, Jennifer Gregory and Dennis Taylor', url: 'https://drive.google.com/file/d/1zxt4JG3MVtXo3QMhVF6q8ULlApbCvm7_/view?usp=drivesdk' },
+    { title: 'As-A level Biology mock Exec preview', description: 'Mary Jones, Richard Fosbery, Dennis Taylor & Jennifer Gregor', url: 'https://drive.google.com/file/d/109YxtNvdKKNd0M6zEuFDRPG8fh8yZ72K/view?usp=drivesdk' },
+  ],
+  resources: []
+};
+
+export const IT_A2 = {
+  id: 'it-a2',
+  title: 'IT',
+  code: '9626',
+  category: 'A level (A2)',
+  notes: [],
+  noteResources: [],
+  topicalQuestions: [],
+  textbooks: [
+    { title: 'Cambridge International AS Level IT', description: 'Hodder education', url: 'https://drive.google.com/file/d/1jjM_s339tpmaRT5dxWvGkP2UOXOOZWnj/view?usp=drivesdk' },
+    { title: 'Cambridge International AS Level Information Technology Student\'s Book [2 ed.]', url: 'https://drive.google.com/file/d/1v_zN4BJ2Kqot7A-sevgbxUMeu41j9ESN/view?usp=drivesdk' },
+    { title: 'Information Technology 9626 Coursebook', url: 'https://drive.google.com/file/d/1vN0ag3Wk_dohy1JUC--UqZ_LAaCkxUuR/view?usp=drivesdk' },
+    { title: 'IT Coursebook', description: 'Paul Long, Sarah Lawrey and Victoria Ellis', url: 'https://drive.google.com/file/d/1tlH1k6r_9UFP_udTHXV1WnhZg7ziJdEl/view?usp=drivesdk' },
+  ],
+  resources: []
+};
+
+export const MATH_A2_PURE = {
+  id: 'math-a2-pure',
+  title: 'Pure Math (Mathematics)',
+  code: '9709',
+  category: 'A level (A2)',
+  notes: [],
+  noteResources: [
+    { title: 'GRAPHS', url: 'https://drive.google.com/file/d/11ieY-1iOVAOedX2f4Z8j582dD0aNtxQk/view?usp=drivesdk', category: 'Notes' },
+    { title: 'INDICES, SURDS & LOGS', url: 'https://drive.google.com/file/d/13nYZ-aIj8W4PDQR9hrUDV3-x340WtwjC/view?usp=drivesdk', category: 'Notes' },
+    { title: 'TRIGONOMETRY', url: 'https://drive.google.com/file/d/1FCOOVz68U8oOzGvBDYe9-jiBbI5bwQAp/view?usp=drivesdk', category: 'Notes' },
+    { title: 'VECTORS', url: 'https://drive.google.com/file/d/1nFqYaVpjzjf9a6yAdZryykpXM5tqJHUU/view?usp=drivesdk', category: 'Notes' },
+    { title: 'TRIGONOMETRY (2)', url: 'https://drive.google.com/file/d/1o261jskxf9dJuLCViDFpaF6M-smwQ9qu/view?usp=drivesdk', category: 'Notes' },
+    { title: 'DIFFERENTIATION', url: 'https://drive.google.com/file/d/1vBY8aRSHDOSwKX-s5ULHmhs5r_4X1mri/view?usp=drivesdk', category: 'Notes' },
+    { title: 'POLYNOMIALS', url: 'https://drive.google.com/file/d/12tiGaKwjmb7FkJrr4gdD7FJm0FuhACM-/view?usp=drivesdk', category: 'Notes' },
+    { title: 'ITERATION (NUMERICAL SOLUTIONS)', url: 'https://drive.google.com/file/d/1E6DNCZEiZafvdJ_jxIl6HNjzG-1ga1va/view?usp=drivesdk', category: 'Notes' },
+    { title: 'BINOMIAL', url: 'https://drive.google.com/file/d/1Gwz5y-O2XN12pRqpGOFql7nvTKTwMxlX/view?usp=drivesdk', category: 'Notes' },
+    { title: 'COMPLEX NUMBERS', url: 'https://drive.google.com/file/d/1HXW9zn5S8ovcDfZvkOzVIguQuOMbHZff/view?usp=drivesdk', category: 'Notes' },
+    { title: 'DIFFERENTIAL EQUATIONS', url: 'https://drive.google.com/file/d/1UFNVCxrrF2Zx3JpkR_6T6Tn5mm3fFFre/view?usp=drivesdk', category: 'Notes' },
+    { title: 'COMPLEX NUMBERS (2)', url: 'https://drive.google.com/file/d/1VeHUcUqcc85Q4bA2RZvvA-9UgyiImpRj/view?usp=drivesdk', category: 'Notes' },
+    { title: 'INTEGRATION', url: 'https://drive.google.com/file/d/1h-muD1KlQyf3G3CpbhCfNQigqhooC1bi/view?usp=drivesdk', category: 'Notes' },
+    { title: 'INEQUALITIES WITH MODULUS', url: 'https://drive.google.com/file/d/1jpQl6eOPpStDOGGejwWpJxanE6LtWWCq/view?usp=drivesdk', category: 'Notes' },
+    { title: 'PARTIAL FRACTIONS', url: 'https://drive.google.com/file/d/1p86Mx32RygnjKxbUIVlKLxQ6zkzTEU2u/view?usp=drivesdk', category: 'Notes' },
+  ],
+  topicalQuestions: [
+    { title: 'WORKSHEET - Partial Fractions Question', url: 'https://drive.google.com/file/d/1DiTSmcW8SC_Zjex64M27wWYmLa4t8KW_/view?usp=drivesdk', category: 'Worksheets' },
+    { title: 'WORKSHEET - Integration Question (3) - Substitution', url: 'https://drive.google.com/file/d/1EoDoozrklXtHOhqQ7R7n3oDf6QDeaMTe/view?usp=drivesdk', category: 'Worksheets' },
+    { title: 'WORKSHEET - Integration Question (5) - Differentiation', url: 'https://drive.google.com/file/d/1GS8hQ1BMoyHNB4tlx8FeE9B7ddTlck6r/view?usp=drivesdk', category: 'Worksheets' },
+    { title: 'WORKSHEET - Integration Question (2) - Partial Fractions', url: 'https://drive.google.com/file/d/1K-HkgRSsC3vAkAJiUe3ec8zMT9EjswoW/view?usp=drivesdk', category: 'Worksheets' },
+    { title: 'WORKSHEET - Differential Equation Question - PART 1', url: 'https://drive.google.com/file/d/1akKqFo0K_NO2w7drpuAVMaCs2sgZwqa2/view?usp=drivesdk', category: 'Worksheets' },
+    { title: 'WORKSHEET - Polynomial Division Quesiton', url: 'https://drive.google.com/file/d/1ed-gMFLWFinD37nhBnOmrj9lfkV0OlKV/view?usp=drivesdk', category: 'Worksheets' },
+    { title: 'WORKSHEET - Absolute Value and Inequality Question', url: 'https://drive.google.com/file/d/1Dq5Kj17EYn3zEVgOrqAUYauZLowzmgt1/view?usp=drivesdk', category: 'Worksheets' },
+    { title: 'WORKSHEET - Integration Question (4) - Trig Identity', url: 'https://drive.google.com/file/d/1NrJTbJIRgyTPNjIo4FdBBE-tf9osFLhS/view?usp=drivesdk', category: 'Worksheets' },
+    { title: 'WORKSHEET - Binomial Expansion Question', url: 'https://drive.google.com/file/d/1X03WpT-4QO3MmP4J8gdZl-IdTa0rpScE/view?usp=drivesdk', category: 'Worksheets' },
+    { title: 'WORKSHEET - Logarithm and Exponential Question', url: 'https://drive.google.com/file/d/1cGEk3F2wgD_05d19DnogVeMvtFUwmm5y/view?usp=drivesdk', category: 'Worksheets' },
+    { title: 'WORKSHEET - Integration Question (1) - By Parts', url: 'https://drive.google.com/file/d/1cmggexFkpOj3G2XuXGioHksYGscrJlNv/view?usp=drivesdk', category: 'Worksheets' },
+    { title: 'WORKSHEET - Differential Equation Question - PART 2', url: 'https://drive.google.com/file/d/1nTaxac44d69MPtrHKESIE48m90CjwbhT/view?usp=drivesdk', category: 'Worksheets' },
+  ],
+  textbooks: [],
+  resources: []
+};
+
+export const MATH_A2_STATS = {
+  id: 'math-a2-stats',
+  title: 'Probability and Statistics (Mathematics)',
+  code: '9709',
+  category: 'A level (A2)',
+  notes: [],
+  noteResources: [
+    { title: 'HYPOTHESIS TESTING S2', url: 'https://drive.google.com/file/d/1C_KEwzsWZceZzzDb_n9a9xec5xd8FbIw/view?usp=drivesdk', category: 'Notes' },
+    { title: 'CONTINUOUS RANDOM VARIABLE S2', url: 'https://drive.google.com/file/d/1MIH96LiPQayC5qxuYUz9a3NhMoAFyokq/view?usp=drivesdk', category: 'Notes' },
+    { title: 'SAMPLING AND ESTIMATION S2', url: 'https://drive.google.com/file/d/1PIg2gv1YcE6Q6WUDL8U0FFwtgkDv1Ttq/view?usp=drivesdk', category: 'Notes' },
+    { title: 'LINEAR COMBINATIONS OF RANDOM VARIABLES S2', url: 'https://drive.google.com/file/d/1aM7CWSkDlBNW5OY4idP5VW2xQ0KaGcR6/view?usp=drivesdk', category: 'Notes' },
+    { title: 'INTRO CLASS S2', url: 'https://drive.google.com/file/d/1lTQgzjivv3Rg2nmxsR7s9ioHb1HGYiJ5/view?usp=drivesdk', category: 'Notes' },
+    { title: 'POISSON DISTRIBUTION S2', url: 'https://drive.google.com/file/d/1yii4mWEPU6kpL3qbR-OS0xvILakEf1Kt/view?usp=drivesdk', category: 'Notes' },
+  ],
+  topicalQuestions: [],
+  textbooks: [],
+  resources: []
+};
+
+export const MATH_A2 = {
+  id: 'math-a2',
+  title: 'Mathematics',
+  code: '9709',
+  category: 'A level (A2)',
+  isParent: true,
+  subSubjects: ['math-a2-pure', 'math-a2-stats']
+};
 
 export const CURRICULUM_DATA = {
   'physics-igcse': PHYSICS_IGCSE,
@@ -232,6 +509,13 @@ export const CURRICULUM_DATA = {
   'physics-al': PHYSICS_AL,
   'it-al': IT_AL,
   'math-al': MATH_AL,
+  'chemistry-a2': CHEMISTRY_A2,
+  'physics-a2': PHYSICS_A2,
+  'biology-a2': BIOLOGY_A2,
+  'it-a2': IT_A2,
+  'math-a2': MATH_A2,
+  'math-a2-pure': MATH_A2_PURE,
+  'math-a2-stats': MATH_A2_STATS,
 };
 
 export const SUBJECTS_LIST = [
@@ -240,9 +524,15 @@ export const SUBJECTS_LIST = [
   { id: 'chemistry-igcse', title: 'Chemistry', code: '0610 & 0971', category: 'IGCSE', icon: 'flask-conical' },
   { id: 'ict-igcse', title: 'ICT', code: '0417', category: 'IGCSE', icon: 'monitor' },
   { id: 'physics-igcse', title: 'Physics', code: '0625 / 0972', category: 'IGCSE', icon: 'zap' },
-  { id: 'chemistry-al', title: 'Chemistry', code: '9701', category: 'A-Level', icon: 'flask-conical' },
-  { id: 'biology-al', title: 'Biology', code: '9700', category: 'A-Level', icon: 'dna' },
-  { id: 'physics-al', title: 'Physics', code: '9702', category: 'A-Level', icon: 'zap' },
-  { id: 'it-al', title: 'IT', code: '9626', category: 'A-Level', icon: 'database' },
-  { id: 'math-al', title: 'Mathematics', code: '9709', category: 'A-Level', icon: 'calculator' },
+  { id: 'chemistry-al', title: 'Chemistry', code: '9701', category: 'AS Level (A1)', icon: 'flask-conical' },
+  { id: 'biology-al', title: 'Biology', code: '9700', category: 'AS Level (A1)', icon: 'dna' },
+  { id: 'physics-al', title: 'Physics', code: '9702', category: 'AS Level (A1)', icon: 'zap' },
+  { id: 'it-al', title: 'IT', code: '9626', category: 'AS Level (A1)', icon: 'database' },
+  { id: 'math-al', title: 'Mathematics', code: '9709', category: 'AS Level (A1)', icon: 'calculator' },
+  { id: 'chemistry-a2', title: 'Chemistry', code: '9701', category: 'A level (A2)', icon: 'flask-conical' },
+  { id: 'physics-a2', title: 'Physics', code: '9702', category: 'A level (A2)', icon: 'zap' },
+  { id: 'biology-a2', title: 'Biology', code: '9700', category: 'A level (A2)', icon: 'dna' },
+  { id: 'it-a2', title: 'IT', code: '9626', category: 'A level (A2)', icon: 'database' },
+  { id: 'math-a2', title: 'Mathematics', code: '9709', category: 'A level (A2)', icon: 'calculator' },
 ];
+
